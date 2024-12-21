@@ -143,7 +143,7 @@ function App() {
         onSubmit={handleSubmit(formSubmit)}
         className="p-4 border-y flex gap-x-3"
       >
-        <Input
+        <Input autoComplete="off"
           {...register("message")}
           className="bg-white dark:text-white dark:bg-zinc-700 p-5"
           placeholder="Message..."
