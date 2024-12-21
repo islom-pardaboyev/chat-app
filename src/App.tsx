@@ -53,7 +53,7 @@ function App() {
     <main className="flex flex-col h-screen bg-primary dark:bg-black/50 justify-between">
       <Header />
 
-      {messages && (
+      {messages ? (
         <section className="h-full p-5 flex flex-col gap-5 md:gap-0 overflow-y-auto">
           {messages.map((message, inx) => {
             if (message.role === "chat") {
@@ -132,6 +132,11 @@ function App() {
             }
           })}
         </section>
+      ) : (
+        <div className="text-center select-none text-zinc-300">
+          <p className="font-bold text-5xl ">Welcome to ChatApp</p>
+          <p className="font-bold">ask something to start conversation</p>
+        </div>
       )}
       <form
         action=""
