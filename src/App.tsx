@@ -1,15 +1,16 @@
-import { Fragment, useState } from "react";
-import { Button } from "./components/ui/button";
-import { Copy, Send } from "lucide-react";
+import { useState } from "react";
+import Header from "./components/header/Header";
 import { useSendMessageMutation } from "./store/api/sen-message-api";
-import { Input } from "./components/ui/input";
+import { Fragment } from "react";
 import { useForm } from "react-hook-form";
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { tailspin } from "ldrs";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import { Copy, Send } from "lucide-react";
 import { Chats } from "./utils";
+import { Input } from "./components/ui/input";
+import { Button } from "./components/ui/button";
 
 tailspin.register();
-
 type FormValue = {
   message: string;
 };
@@ -21,7 +22,6 @@ function App() {
   const formSubmit = (data: FormValue) => {
     const { message } = data;
     if (message) {
-      
       const data = {
         role: "user",
         avatar: "https://github.com/shadcn.png",
@@ -45,18 +45,14 @@ function App() {
         };
 
         setMessages((prev) => (prev ? [...prev, data] : [data]));
-        reset();
       });
+      reset();
     }
   };
-
   return (
-    <main className="flex flex-col h-screen bg-primary justify-between">
-      <header className="bg-white px-2 md:px-0">
-        <div className="container py-3">
-          <h1 className="text-3xl font-consolas font-bold">ChatGPT</h1>
-        </div>
-      </header>
+    <main className="flex flex-col h-screen bg-primary dark:bg-black/50 justify-between">
+      <Header />
+
       {messages && (
         <section className="h-full p-5 flex flex-col gap-5 md:gap-0 overflow-y-auto">
           {messages.map((message, inx) => {
@@ -64,7 +60,7 @@ function App() {
               return (
                 <div
                   key={inx}
-                  className="bg-white p-3 border rounded-lg md:w-[30vw] w-[80vw] flex gap-2"
+                  className="bg-white dark:bg-zinc-800 dark:text-white p-3 rounded-lg md:w-[30vw] w-[80vw] flex gap-2"
                 >
                   <Avatar>
                     <AvatarImage
@@ -122,7 +118,14 @@ function App() {
                     </Avatar>
                   </div>
                   <div className="px-3 opacity-0 group-hover:opacity-100 py-1">
-                    <Copy onClick={() => navigator.clipboard.writeText(message.message)} className="cursor-pointer" size={10} color="gray"/>
+                    <Copy
+                      onClick={() =>
+                        navigator.clipboard.writeText(message.message)
+                      }
+                      className="cursor-pointer"
+                      size={10}
+                      color="gray"
+                    />
                   </div>
                 </div>
               );
@@ -137,7 +140,7 @@ function App() {
       >
         <Input
           {...register("message")}
-          className="bg-white p-5"
+          className="bg-white dark:text-white dark:bg-zinc-700 p-5"
           placeholder="Message..."
         />
         <Button className="h-full" disabled={isLoading}>
